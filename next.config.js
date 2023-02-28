@@ -4,7 +4,9 @@ const nextConfig = {
   images:{
     domains:[
       "images.pexels.com",
-      "images.freeimages.com"
+      "images.freeimages.com",
+      "media.istockphoto.com",
+      "thumbs.dreamstime.com"
     ]
   },
   env: {
