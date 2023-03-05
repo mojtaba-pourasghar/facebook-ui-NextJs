@@ -12,6 +12,7 @@ function CreatePost() {
   const inputRef = useRef(null);
   const hiddenFileInputRef = useRef(null);
   const [imageToPost, setImageToPost] = useState(null);
+  const [imageName, setImageName] = useState('');
   const dispatch = useDispatch();
 
   const handleClickEvent = () => {
@@ -22,6 +23,7 @@ function CreatePost() {
     const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
+      setImageName(e.target.files[0].name);
       reader.onload = (e) => {
         setImageToPost(e.target.result);
       };
@@ -33,19 +35,27 @@ function CreatePost() {
   };
 
   const handleSubmit = (e) => {
-    e.prevenDefault();
+    e.preventDefault();
     if (!inputRef.current.value) return;
     const formData = new FormData();
-    formData.append("file", imageToPost);
-    formData.append("text", inputRef.current.value);
-    formData.append("user_id", session.id);
+
+    let base64 = null;
+    if (imageToPost != null)  base64 = imageToPost.split(",")[1];
+
+    formData.append("image", base64);
+    formData.append("imageName", imageName);
+
+    formData.append("post", inputRef.current.value);
+    formData.append("userId", session.id);
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signin`, formData, {
-        headers: { Accept: "application.json" },
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/post`, formData, {
+        headers: { Accept: "application/json" ,
+        "Authorization": "Bearer " + session.jwt},
       })
       .then((response) => {
         inputRef.current.value = "";
+        console.log(response.data);
         dispatch(addPost(response.data));
         removeImage();
       })
