@@ -1,7 +1,7 @@
 
 ## About this project
 
-Design and development of a website similar to Facebook with responsive capabilities and NextJS technology, in a way that communicates with a Java web service written with Springboot via Rest.
+Design and development of a website similar to Facebook with responsive capabilities and NextJS technology, in a way that communicates with a Java web service.
 
 
 ## About Technologies
